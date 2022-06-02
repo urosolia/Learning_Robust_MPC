@@ -130,7 +130,7 @@ def plot_predicted_trajectory(map, lmpc, it, time):
     for j in range(0, numSS_Points):
         SSpoints_x[j,0], SSpoints_y[j,0] = map.getGlobalPosition(lmpc.SSStoredPredTraj[it][time][j, 4],
                                                                  lmpc.SSStoredPredTraj[it][time][j, 5])
-    plt.plot(SSpoints_x, SSpoints_y, 'sb', label="SS",zorder=0);
+    plt.plot(SSpoints_x, SSpoints_y, 'sb', label="LS",zorder=0);
 
     plt.plot(xPred, yPred, '-or', label="Predicted Trajectory",zorder=1);
     rec.set_xy(np.array([car_x, car_y]).T);
