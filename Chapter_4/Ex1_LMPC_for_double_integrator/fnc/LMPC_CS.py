@@ -9,8 +9,8 @@ import pdb
 import scipy
 from cvxpy import *
 
-class LMPC(object):
-	"""Learning Model Predictive Controller (LMPC)
+class LMPC_CS(object):
+	"""Learning Model Predictive Controller (LMPC) implemented using the Convex Safe set (CS)
 	Inputs:
 		- A,B: System dyamics
 		- x_max, u_max: max of the infinity norm constraint
@@ -68,7 +68,7 @@ class LMPC(object):
 		"""This method solves an FTOCP given:
 			- x0: initial condition
 			- SS: (optional) contains a set of state and the terminal constraint is ConvHull(SS)
-			- Qfun: (optional) cost associtated with the state stored in SS. Terminal cost is BarycentrcInterpolation(SS, Qfun)
+			- Vfun: (optional) cost associtated with the state stored in SS. Terminal cost is BarycentrcInterpolation(SS, Vfun)
 		""" 
 
 		# Initialize Variables

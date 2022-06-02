@@ -1,2 +1,4 @@
 *.pyc
 .DS*
+*.ipynb_checkpoints
+*.png

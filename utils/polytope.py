@@ -10,7 +10,7 @@ from scipy.spatial import ConvexHull, convex_hull_plot_2d
 class polytope(object):
 	"""docstring for polytope"""
 	def __init__(self, F=None, b=None, vertices=None):
-
+		self.maxIt = 100
 		if vertices is None:
 			self.b = b
 			self.F = F
@@ -40,14 +40,43 @@ class polytope(object):
 			self.b = bPreAB
 
 	def computeO_inf(self, A):
-		for i in range(0,5):
+		terminated = False
+		for i in range(0,self.maxIt):
+			F1 = self.F
+			b1 = self.b
 			Fpre, bpre = self.preA(A)
 			self.intersect(Fpre, bpre)
-	
-	def computeC_inf(self, A, B):
-		for i in range(0,5):
-			Fpre, bpre = self.preAB(A, B, self.F.shape[1])
+			# if self.contained(self.F, self.b, self.F, self.b):
+			if self.contained(F1, b1, self.F, self.b) and self.contained(self.F, self.b, F1, b1):
+				terminated = True
+				print("Oinfinity computation terminated after ",i," iterations")
+				break
+		if terminated == False:
+			print("Oinfinity computation has not terminated after ",self.maxIt," iterations")
+
+	def contained(self, F,b, F1, b1):
+		vertices = pypoman.duality.compute_polytope_vertices(F, b)
+		vertices1 = pypoman.duality.compute_polytope_vertices(F1, b1)
+		contained = True
+		for v in vertices:
+			if (np.dot(F1, v.T) > b1 + 10**(-12)).any():
+				contained = False	
+		return contained
+
+	def computeC_inf(self, A, B, Fu, bu):
+		terminated = False
+		for i in range(0,self.maxIt):
+			F1 = self.F
+			b1 = self.b
+			Fpre, bpre = self.preAB(A, B, Fu, bu)
 			self.intersect(Fpre, bpre)
+			if self.contained(F1, b1, self.F, self.b) and self.contained(self.F, self.b, F1, b1):
+				terminated = True
+				print("Cinfinity computation terminated after ",i," iterations")
+				break
+
+		if terminated == False:
+			print("Cinfinity computation has not terminated after ",self.maxIt," iterations")
 
 	def preA(self, A):
 		b = self.b
@@ -87,9 +116,9 @@ class polytope(object):
 		F, b = pypoman.duality.compute_polytope_halfspaces(vertices)
 		return F, b
 
-	def plot2DPolytope(self, color, label = None):
+	def plot2DPolytope(self, color, linestyle='-o', label = None):
 		# This works only in 2D!!!!
 		vertices  = pypoman.polygon.compute_polygon_hull(self.F, self.b)
 		vertices.append(vertices[0])
 		xs, ys = zip(*vertices) #create lists of x and y values
-		plt.plot(xs, ys, '-o', color=color, label=label)
+		plt.plot(xs, ys, linestyle, color=color, label=label)
