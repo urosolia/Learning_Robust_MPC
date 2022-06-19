@@ -6,10 +6,10 @@ import numpy as np
 from cvxpy import *
 
 ##### MY CODE ######
-class FTOCP(object):
-	""" Finite Time Optimal Control Problem (FTOCP)
+class FTO(object):
+	""" Finite Time Optimal Control Problem (FTO)
 	Methods:
-		- solve: solves the FTOCP given the initial condition x0 and terminal contraints
+		- solve: solves the FTO given the initial condition x0 and terminal contraints
 		- buildNonlinearProgram: builds the nonlinear program solved by the above solve methos
 		- model: given x_t and u_t computes x_{t+1} = Ax_t + Bu_t
 

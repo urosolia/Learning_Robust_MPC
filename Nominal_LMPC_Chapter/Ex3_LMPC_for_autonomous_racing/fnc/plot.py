@@ -71,6 +71,8 @@ def plotClosedLoopLMPC(lmpc, map, last_laps_to_plot):
 
     for i in range(TotNumberIt-last_laps_to_plot, TotNumberIt):
         plt.plot(SS_glob[i][0:LapTime[i], 4], SS_glob[i][0:LapTime[i], 5], '-r')
+    
+    plt.savefig('closedloop.pdf')
 
 
 
@@ -138,6 +140,9 @@ def plot_predicted_trajectory(map, lmpc, it, time):
 
     plt.legend(bbox_to_anchor=(0,1.02,1,0.2), loc="lower left",
                 mode="expand", borderaxespad=0, ncol=3)
+    
+    plt.savefig('predicted.pdf')
+
     plt.show()
 
     def animation_xy(map, lmpc, it):
