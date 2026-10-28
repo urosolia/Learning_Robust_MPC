@@ -210,7 +210,7 @@ class LMPC_CT(object):
 					self.feasible = 1
 					# Notice that the cost is given by the cost of the ftocp + the number of steps not constrainted to be xf
 					lamb = sol["x"][((self.N+1)*self.n+self.N*self.d):((self.N+1)*self.n + self.d*self.N + self.dimSS)]
-					terminalCost = np.dot(self.costSS, lamb)
+					terminalCost = np.dot(self.costSS, np.array(lamb)).item() # .item(): scalar, required by numpy >= 1.24
 					# costSolved.append(terminalCost+(self.N+1-i))
 					if i == 0:
 						costSolved.append(terminalCost+(self.N-i))
